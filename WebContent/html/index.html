@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <script src="../js/jquery-3.5.1.js"></script>
   <link rel="stylesheet" type="text/css" href="../res/static/css/main.css">
   <link rel="stylesheet" type="text/css" href="../res/layui/css/layui.css">
   <script type="text/javascript" src="../res/layui/layui.js"></script>
@@ -17,7 +18,7 @@
         <a href="#">首页</a>
       </p>
       <div class="sn-quick-menu">
-        <div class="login"><a href="login.html">登录</a></div>
+        <div id="username"></div>
         <div class="sp-cart"><a href="shopcart.html">购物车</a><span>2</span></div>
       </div>
     </div>
@@ -492,9 +493,31 @@ layui.config({
      //      console.log(res);
      //    }
      //  })
-    
+    $.ajax({
+  			type : "post",
+  		    async : false,            //异步请求（同步请求将会锁住浏览器，用户其他操作必须等待请求完成才可以执行）
+  		    url : "http://localhost:8080/ShoppingMall/html/UserController",
+  		    data : {
+  		    	"method":"getToken"
+  		    },
+  		    headers: {
+  		    	"token":localStorage.token
+  		    },
+  		    dataType : "json",        //返回数据形式为json
+  		    success : function(result) {
+  		    	if(result.item != ""){		//登陆成功
+  		    		document.getElementById('username').innerHTML = result.item
+  		    	}else{
+  		    		window.location.href="./login.html"; 
+  		    	}
+  		    },
+  		    error : function(errorMsg) {
+  		        
+  		    }
+  		})
 
 });
+
   </script>
 </body>
 </html>
